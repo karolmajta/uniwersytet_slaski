@@ -11,7 +11,7 @@ users = {
 
 @app.route('/')
 def index():
-    return "Index"
+    return "Hello from Remote Server"
 
 operations = {
     'add': lambda x1, x2: x1 + x2,

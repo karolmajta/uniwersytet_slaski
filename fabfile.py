@@ -13,6 +13,7 @@ def clone_and_restart(c):
        print(f'kill -9 {pid}')     
        c.run(f'kill -9 {pid}')
 
-    result = c.run('cd ~/uniwersytet_slaski && ./virtualenv/bin/python main.py')
-    print(result.stdout)
+    c.run('cd ~/uniwersytet_slaski && git pull')
+
+    result = c.run('cd ~/uniwersytet_slaski && ./virtualenv/bin/gunicorn -b 0.0.0.0:8080 main:app --daemon')
 

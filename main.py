@@ -40,9 +40,12 @@ def flipText():
 @app.route('/users/<int:user_id>')
 def page(user_id):
     try:
-        return users[user_id]
+        return find_user_by_id(users, user_id)
     except KeyError:
         return "User not found...", 404
+
+def find_user_by_id(users_dict, user_id):
+    return users_dict[user_id]
 
 @app.route('/users/<user_name>')
 def page2(user_name):

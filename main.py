@@ -9,9 +9,11 @@ users = {
     3: 'Karol Marx',
 }
 
+
 @app.route('/')
 def index():
     return "Hello from Remote Server"
+
 
 operations = {
     'add': lambda x1, x2: x1 + x2,
@@ -20,23 +22,26 @@ operations = {
     'divide': lambda x1, x2: x1 / x2
 }
 
+
 @app.route('/calc/add/', methods=['POST'])
 def calc():
     return {"result": sum(request.json)}
+
 
 @app.route('/calc/pow/', methods=['POST'])
 def power():
     result = 1
     for x in range(0, request.json):
-        result *= x+1
+        result *= x + 1
     return {"result": result}
-    
 
-@app.route('/reverse', methods = ['POST'])
+
+@app.route('/reverse', methods=['POST'])
 def flipText():
     reversedText = request.json.split(' ')
     return ' '.join(reversed(reversedText))
-    
+
+
 @app.route('/users/<int:user_id>')
 def page(user_id):
     try:
@@ -44,8 +49,10 @@ def page(user_id):
     except KeyError:
         return "User not found...", 404
 
+
 def find_user_by_id(users_dict, user_id):
     return users_dict[user_id]
+
 
 @app.route('/users/<user_name>')
 def page2(user_name):
@@ -57,11 +64,14 @@ def page2(user_name):
         return ", ".join(results)
     else:
         return "User not found by name...", 404
-    
 
-@app.errorhandler(404) 
+
+@app.errorhandler(404)
 def not_found(e):
     return "Not found"
 
+
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 8080)), debug=True)
+    app.run(host=os.getenv('IP', '0.0.0.0'),
+            port=int(os.getenv('PORT', 8080)),
+            debug=True)

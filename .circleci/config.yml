@@ -37,3 +37,8 @@ workflows:
       - deploy-lambda-function:
          requires:
            - build-and-test
+         filters:
+            branches:
+              only:
+                - master
+

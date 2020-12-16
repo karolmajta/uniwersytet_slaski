@@ -19,6 +19,7 @@ jobs:
           name: Lint
 
   deploy-lambda-function:
+    executor: python/default
     steps:
       - checkout
       - python/load-cache

@@ -18,6 +18,17 @@ jobs:
           command: python -m flake8
           name: Lint
 
+  deploy-lambda-function:
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run:
+          command: echo "Hello"
+          name: Deploy lambda function
+
+
 workflows:
   main:
     jobs:

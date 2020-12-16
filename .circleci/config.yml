@@ -34,4 +34,6 @@ workflows:
   main:
     jobs:
       - build-and-test
-      - deploy-lambda-function
+      - deploy-lambda-function:
+         requires:
+           - build-and-test

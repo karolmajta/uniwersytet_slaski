@@ -1,11 +1,9 @@
 version: 2.1
 
-orbs:
-  python: circleci/python@3.8
-
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
       - run:
@@ -22,7 +20,8 @@ jobs:
           name: Lint
 
   deploy-lambda-function:
-    executor: python/default
+    docker:
+      - image: circleci/python:3.8
     steps:
       - checkout
       - run:

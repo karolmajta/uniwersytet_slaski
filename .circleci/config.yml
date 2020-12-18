@@ -39,7 +39,7 @@ jobs:
           command: ./myvirtualenv/bin/pip install -r requirements.txt
           name: Install dependencies
       - run:
-          command: ./myvirtualenv/bin/zappa update production
+          command: source myvirtualenv/bin/activate && zappa update production
           name: Deploy lambda function
 
 

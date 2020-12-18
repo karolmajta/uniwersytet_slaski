@@ -8,27 +8,31 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
       - run:
-          command: pip install -r requirements.txt
+          command: python -m venv myvirtualenv
+          name: Create virtualenv
+      - run:
+          command: ./myvirtualenv/bin/pip install -r requirements.txt
           name: Install dependencies
-      - python/save-cache
       - run:
-          command: pytest
+          command: ./myvirtualenv/pytest
           name: Test
       - run:
-          command: flake8
+          command: ./myvirtualenv/flake8
           name: Lint
 
   deploy-lambda-function:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
       - run:
-          command: zappa update production
+          command: python -m venv myvirtualenv
+          name: Create virtualenv
+      - run:
+          command: ./myvirtualenv/bin/pip install -r requirements.txt
+          name: Install dependencies
+      - run:
+          command: ./myvirtualenv/bin/zappa update production
           name: Deploy lambda function
 
 

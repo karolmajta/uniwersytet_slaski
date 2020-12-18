@@ -12,7 +12,7 @@ users = {
 
 @app.route('/')
 def index():
-    return "Hello from Remote Server"
+    return "Hello from Remote Server - I was deployed from Circle CI"
 
 
 operations = {

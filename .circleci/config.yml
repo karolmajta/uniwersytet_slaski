@@ -42,16 +42,69 @@ jobs:
           command: source myvirtualenv/bin/activate && zappa update production
           name: Deploy lambda function
 
+  package-lambda-function:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - run:
+          command: |
+            mkdir -p ~/.aws &&
+            echo "[default]" >> ~/.aws/credentials &&
+            echo "aws_access_key_id = $AWS_ACCESS_KEY_ID" >> ~/.aws/credentials &&
+            echo "aws_secret_access_key = $AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials &&
+            echo "region = eu-central-1" >> ~/.aws/credentials
+          name: Create aws profile file
+      - run:
+          command: python -m venv myvirtualenv
+          name: Create virtualenv
+      - run:
+          command: ./myvirtualenv/bin/pip install -r requirements.txt
+          name: Install dependencies
+      - run:
+          command: source myvirtualenv/bin/activate && zappa package -o lambda_function.zip production
+          name: Package lambda function
+      - store_artifacts:
+          path: lambda_function.zip
+          destination: lambda_function.zip
+      - persist_to_workspace:
+          root: .
+          paths:
+            - lambda_function.zip
+
+  terraform-plan:
+    docker:
+      - image: hashicorp/terraform:0.14.3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          command: ls -al lambda_function.zip
+          name: Get size of lambda_function
+
+
 
 workflows:
   main:
     jobs:
       - build-and-test
+      - approve-deploy:
+         type: approval
+         requires:
+           - build-and-test
       - deploy-lambda-function:
          requires:
            - build-and-test
+           - approve-deploy
          filters:
             branches:
               only:
                 - master
+      - package-lambda-function:
+         requires:
+           - build-and-test
+      - terraform-plan:
+          requires:
+            - package-lambda-function
 

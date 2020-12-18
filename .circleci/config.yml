@@ -15,10 +15,10 @@ jobs:
           command: ./myvirtualenv/bin/pip install -r requirements.txt
           name: Install dependencies
       - run:
-          command: ./myvirtualenv/pytest
+          command: ./myvirtualenv/bin/pytest
           name: Test
       - run:
-          command: ./myvirtualenv/flake8
+          command: ./myvirtualenv/bin/flake8
           name: Lint
 
   deploy-lambda-function:

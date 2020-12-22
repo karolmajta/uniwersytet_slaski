@@ -36,6 +36,14 @@ def power():
     return {"result": result}
 
 
+@app.route('/calc/log/', methods=['POST'])
+def log():
+    x = request.json['x']
+    y = request.json['y']
+    return {"result":
+             math.log(x, y) }
+
+
 @app.route('/reverse', methods=['POST'])
 def flipText():
     reversedText = request.json.split(' ')

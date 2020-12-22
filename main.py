@@ -40,7 +40,8 @@ def power():
 def log():
     x = request.json['x']
     y = request.json['y']
-    return math.log(x, y)
+    return {"result":
+             math.log(x, y) }
 
 
 @app.route('/reverse', methods=['POST'])
